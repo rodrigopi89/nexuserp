@@ -1,0 +1,6 @@
+{
+  "name": "Nexus ERP + POS",
+  "description": "A comprehensive, multi-company SaaS ERP and POS system with Fiscal, Financial, Stock, CRM, and Delivery modules.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["Multi-company", "POS", "Fiscal", "Financial", "Stock", "CRM", "Delivery", "Work Order", "Public API", "WhatsApp Integration"]
+}

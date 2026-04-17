@@ -1,0 +1,114 @@
+{
+  "entities": {
+    "companies": {
+      "title": "Company",
+      "description": "Multi-company support entity",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Legal name" },
+        "tradeName": { "type": "string", "description": "Commercial name" },
+        "taxId": { "type": "string", "description": "CNPJ/CPF" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "address": { "type": "object" },
+        "logoUrl": { "type": "string" },
+        "plan": { "type": "string", "enum": ["basic", "pro", "enterprise"] },
+        "modules": { "type": "array", "items": { "type": "string" } },
+        "whiteLabelConfig": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "ownerUid": { "type": "string" }
+      },
+      "required": ["name", "taxId", "ownerUid"]
+    },
+    "users": {
+      "title": "User",
+      "description": "System users with RBAC",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "manager", "seller", "waiter", "technician"] },
+        "companyId": { "type": "string" },
+        "permissions": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["email", "role", "companyId"]
+    },
+    "products": {
+      "title": "Product",
+      "description": "Inventory items",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "barcode": { "type": "string" },
+        "price": { "type": "number" },
+        "cost": { "type": "number" },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "category": { "type": "string" },
+        "unit": { "type": "string" },
+        "companyId": { "type": "string" },
+        "isKit": { "type": "boolean" },
+        "kitItems": { "type": "array" }
+      },
+      "required": ["name", "price", "companyId"]
+    },
+    "sales": {
+      "title": "Sale",
+      "description": "POS and standard sales",
+      "type": "object",
+      "properties": {
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "discount": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed", "cancelled"] },
+        "companyId": { "type": "string" },
+        "customerId": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "fiscalInfo": { "type": "object" }
+      },
+      "required": ["total", "status", "companyId"]
+    },
+    "customers": {
+      "title": "Customer",
+      "description": "CRM and Sales contacts",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "taxId": { "type": "string" },
+        "companyId": { "type": "string" },
+        "funnelStage": { "type": "string" }
+      },
+      "required": ["name", "companyId"]
+    },
+    "financial_transactions": {
+      "title": "Financial Transaction",
+      "description": "Accounts payable/receivable",
+      "type": "object",
+      "properties": {
+        "description": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["income", "expense"] },
+        "dueDate": { "type": "string", "format": "date" },
+        "paymentDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["pending", "paid", "overdue"] },
+        "companyId": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["amount", "type", "status", "companyId"]
+    }
+  },
+  "firestore": {
+    "/companies/{companyId}": { "schema": "companies", "description": "Company settings" },
+    "/users/{userId}": { "schema": "users", "description": "User profiles" },
+    "/companies/{companyId}/products/{productId}": { "schema": "products", "description": "Company products" },
+    "/companies/{companyId}/sales/{saleId}": { "schema": "sales", "description": "Company sales" },
+    "/companies/{companyId}/customers/{customerId}": { "schema": "customers", "description": "Company customers" },
+    "/companies/{companyId}/financial/{transactionId}": { "schema": "financial_transactions", "description": "Financial records" }
+  }
+}
